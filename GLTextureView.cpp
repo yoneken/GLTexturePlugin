@@ -13,13 +13,6 @@ using namespace cnoid;
 TextureScene::TextureScene(QWidget* parent)
     : QGLWidget(parent), tex_width(320), tex_height(280)
 {
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 }
 
 TextureScene::~TextureScene(void)
@@ -40,6 +33,13 @@ bool TextureScene::setTime(double time)
 void TextureScene::initializeGL()
 {
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 
 	connect( &timer, SIGNAL(timeout()), this, SLOT(idle()) );
 	if(!timer.isActive()){
@@ -68,16 +68,24 @@ void TextureScene::paintGL()
 	glLoadIdentity();
 
 	GLshort vertices[] = {
-		0,	  0,
+/*		0,	  0,
 		display_width,	  0,
 		0,	display_height,
 		display_width,	display_height,
+*/		-1,	  -1,
+		-1,	  1,
+		1,	-1,
+		1,	1,
 	};
 	GLfloat texCoords[] = {
-		(GLfloat)display_width/tex_width,	(GLfloat)display_height/tex_height,
-		0.0f,	(GLfloat)display_height/tex_height,
-		(GLfloat)display_width/tex_width,	0.0f,
-		0.0f,	0.0f,
+/*		((GLfloat)display_width)/tex_width,	((GLfloat)display_height)/tex_height,
+		0.0f,	((GLfloat)display_height)/tex_height,
+		((GLfloat)display_width)/tex_width,	0.0f,
+		0.0f,	0.0f,*/
+		1.0f, 1.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		0.0f, 0.0f,
 	};
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_TEXTURE_2D);
